@@ -18,6 +18,10 @@ public class PushNotificationProps {
         return getBundleStringFirstNotNull("gcm.notification.body", "body");
     }
 
+    public String getChannelId() {
+        return getBundleStringFirstNotNull("channelId", null);
+    }
+
     public Bundle asBundle() {
         return (Bundle) mBundle.clone();
     }
