@@ -23,6 +23,7 @@ import static com.wix.reactnativenotifications.Defs.NOTIFICATION_OPENED_EVENT_NA
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_BACKGROUND_EVENT_NAME;
 
+import java.lang.Long;
 import java.util.ArrayList;
 
 public class PushNotification implements IPushNotification {
@@ -172,7 +173,7 @@ public class PushNotification implements IPushNotification {
         }
 
         if (bundle.containsKey("vibrate")) {
-            final ArrayList<long> vibrate = bundle.getSerializable("vibrate");
+            final ArrayList<Long> vibrate = bundle.getSerializable("vibrate");
             long[] arr = new long[vibrate.size()];
             arr = vibrate.toArray(arr);
             notification.setVibrate(arr);
