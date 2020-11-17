@@ -151,20 +151,23 @@ public class PushNotification implements IPushNotification {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setAutoCancel(true);
 
-        final int priority = mNotificationProps.getPriority();
-        if (priority != 0) {
+        final Bundle bundle = mNotificationProps.mBundle;
+
+        if (bundle.containsKey("priority")) {
+            final int priority = bundle.getInt("priority");
             notification.setPriority(priority);
         }
 
-        final boolean flagInsistent = mNotificationProps.getFlagInsistent();
-        if (flagInsistent != null) {
+        if (bundle.containsKey("flagInsistent")) {
+            final boolean flagInsistent = bundle.getBoolean("flagInsistent");
             notification.setFlagInsistent(flagInsistent);
         }
 
         setUpIcon(notification);
 
-        if (mNotificationProps.getChannelId()) {
-            notification.setChannelId(mNotificationProps.getChannelId());
+        final String channelId = mNotificationProps.getChannelId();
+        if (channelId != null) {
+            notification.setChannelId(channelId);
         } else {
             String CHANNEL_ID = "channel_01";
             String CHANNEL_NAME = "Channel Name";
