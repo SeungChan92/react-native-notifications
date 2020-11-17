@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.react.bridge.ReactContext;
 import com.wix.reactnativenotifications.core.AppLaunchHelper;
@@ -24,6 +25,7 @@ import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_BACKGROUND_EVENT_NAME;
 
 import java.lang.Long;
+import java.util.Arrays;
 import java.util.ArrayList;
 
 public class PushNotification implements IPushNotification {
@@ -158,6 +160,7 @@ public class PushNotification implements IPushNotification {
     }
 
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
+        Log.d("SEUNG", "test");
         final Notification.Builder notification = new Notification.Builder(mContext)
                 .setContentTitle(mNotificationProps.getTitle())
                 .setContentText(mNotificationProps.getBody())
@@ -198,6 +201,7 @@ public class PushNotification implements IPushNotification {
                 notification.setChannelId(CHANNEL_ID);
             }
         }
+        Log.d("SEUNG", Arrays.toString(notification.vibrate));
 
         return notification;
     }
