@@ -165,7 +165,7 @@ public class PushNotification implements IPushNotification {
         final Bundle bundle = mNotificationProps.mBundle;
 
         if (bundle.containsKey("priority")) {
-            final int priority = bundle.getInt("priority");
+            final int priority = (int) bundle.getDouble("priority");
             notification.setPriority(priority);
         }
 
