@@ -155,6 +155,7 @@ public class PushNotification implements IPushNotification {
            ) {
             notification.flags |= Notification.FLAG_INSISTENT;
         }
+        Log.d("SEUNG", Arrays.toString(notification.vibrate));
 
         return notification;
     }
@@ -201,7 +202,6 @@ public class PushNotification implements IPushNotification {
                 notification.setChannelId(CHANNEL_ID);
             }
         }
-        Log.d("SEUNG", Arrays.toString(notification.vibrate));
 
         return notification;
     }
