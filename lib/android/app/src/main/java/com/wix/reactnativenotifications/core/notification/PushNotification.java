@@ -160,7 +160,7 @@ public class PushNotification implements IPushNotification {
 
         if (bundle.containsKey("flagInsistent")) {
             final boolean flagInsistent = bundle.getBoolean("flagInsistent");
-            notification.setFlagInsistent(flagInsistent);
+            notification.setFlag(Notification.FLAG_INSISTENT, flagInsistent);
         }
 
         setUpIcon(notification);
