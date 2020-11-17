@@ -23,6 +23,8 @@ import static com.wix.reactnativenotifications.Defs.NOTIFICATION_OPENED_EVENT_NA
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_EVENT_NAME;
 import static com.wix.reactnativenotifications.Defs.NOTIFICATION_RECEIVED_BACKGROUND_EVENT_NAME;
 
+import java.util.ArrayList;
+
 public class PushNotification implements IPushNotification {
 
     final protected Context mContext;
@@ -167,6 +169,11 @@ public class PushNotification implements IPushNotification {
         if (bundle.containsKey("priority")) {
             final int priority = (int) bundle.getDouble("priority");
             notification.setPriority(priority);
+        }
+
+        if (bundle.containsKey("vibrate")) {
+            final Object[] vibrate = (int) bundle.getSerializable("vibrate").toArray();
+            notification.setVibrate(vibrate);
         }
 
         setUpIcon(notification);
