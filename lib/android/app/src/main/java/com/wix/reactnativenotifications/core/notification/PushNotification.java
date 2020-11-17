@@ -171,14 +171,14 @@ public class PushNotification implements IPushNotification {
 
         setUpIcon(notification);
 
-        final String channelId = mNotificationProps.getChannelId();
-        if (channelId != null) {
-            notification.setChannelId(channelId);
-        } else {
-            String CHANNEL_ID = "channel_01";
-            String CHANNEL_NAME = "Channel Name";
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            final String channelId = mNotificationProps.getChannelId();
+            if (channelId != null) {
+                notification.setChannelId(channelId);
+            } else {
+                String CHANNEL_ID = "channel_01";
+                String CHANNEL_NAME = "Channel Name";
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
                         CHANNEL_NAME,
                         NotificationManager.IMPORTANCE_DEFAULT);
