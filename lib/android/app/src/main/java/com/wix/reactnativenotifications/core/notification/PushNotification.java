@@ -153,7 +153,7 @@ public class PushNotification implements IPushNotification {
 
         final int priority = mNotificationProps.getPriority();
         if (priority) {
-            notification.setPriority(priority)
+            notification.setPriority(priority);
         }
 
         final int flagInsistent = mNotificationProps.getFlagInsistent();
