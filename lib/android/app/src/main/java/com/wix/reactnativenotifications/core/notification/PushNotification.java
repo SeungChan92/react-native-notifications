@@ -140,7 +140,18 @@ public class PushNotification implements IPushNotification {
     }
 
     protected Notification buildNotification(PendingIntent intent) {
-        return getNotificationBuilder(intent).build();
+        final Notification notification = getNotificationBuilder(intent).build();
+
+        final Bundle bundle = mNotificationProps.mBundle;
+
+        if (
+                bundle.containsKey("flagInsistent")
+                && bundle.getBoolean("flagInsistent")
+           ) {
+            notification.flags |= Notification.FLAG_INSISTENT;
+        }
+
+        return notification;
     }
 
     protected Notification.Builder getNotificationBuilder(PendingIntent intent) {
@@ -156,11 +167,6 @@ public class PushNotification implements IPushNotification {
         if (bundle.containsKey("priority")) {
             final int priority = bundle.getInt("priority");
             notification.setPriority(priority);
-        }
-
-        if (bundle.containsKey("flagInsistent")) {
-            final boolean flagInsistent = bundle.getBoolean("flagInsistent");
-            notification.setFlag(Notification.FLAG_INSISTENT, flagInsistent);
         }
 
         setUpIcon(notification);
