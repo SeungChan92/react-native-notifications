@@ -23,11 +23,11 @@ public class PushNotificationProps {
     }
 
     public int getPriority() {
-        return getBundleStringFirstNotNull("priority", null);
+        return getBundleIntFirstNotNull("priority", null);
     }
 
-    public int getFlagInsistent() {
-        return getBundleStringFirstNotNull("flagInsistent", null);
+    public boolean getFlagInsistent() {
+        return getBundleBooleanFirstNotNull("flagInsistent", null);
     }
 
     public Bundle asBundle() {
@@ -54,5 +54,15 @@ public class PushNotificationProps {
     private String getBundleStringFirstNotNull(String key1, String key2) {
         String result = mBundle.getString(key1);
         return result == null ? mBundle.getString(key2) : result;
+    }
+
+    private int getBundleIntFirstNotNull(String key1, String key2) {
+        int result = mBundle.getInt(key1);
+        return result == 0 ? mBundle.getInt(key2) : result;
+    }
+
+    private int getBundleBooleanFirstNotNull(String key1, String key2) {
+        int result = mBundle.getBoolean(key1, null);
+        return result == null ? mBundle.getBoolean(key2, null) : result;
     }
 }

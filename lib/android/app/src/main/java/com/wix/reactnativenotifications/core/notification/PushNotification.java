@@ -152,12 +152,12 @@ public class PushNotification implements IPushNotification {
                 .setAutoCancel(true);
 
         final int priority = mNotificationProps.getPriority();
-        if (priority) {
+        if (priority != 0) {
             notification.setPriority(priority);
         }
 
-        final int flagInsistent = mNotificationProps.getFlagInsistent();
-        if (flagInsistent) {
+        final boolean flagInsistent = mNotificationProps.getFlagInsistent();
+        if (flagInsistent != null) {
             notification.setFlagInsistent(flagInsistent);
         }
 
