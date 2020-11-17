@@ -173,10 +173,11 @@ public class PushNotification implements IPushNotification {
         }
 
         if (bundle.containsKey("vibrate")) {
-            final ArrayList<Long> vibrate = bundle.getSerializable("vibrate");
-            long[] arr = new long[vibrate.size()];
-            arr = vibrate.toArray(arr);
-            notification.setVibrate(arr);
+            //final ArrayList<Long> vibrate = bundle.getSerializable("vibrate");
+            //long[] arr = new long[vibrate.size()];
+            //arr = vibrate.toArray(arr);
+            //notification.setVibrate(arr);
+            notification.setVibrate(new long[]{ 500, 1500 });
         }
 
         setUpIcon(notification);
