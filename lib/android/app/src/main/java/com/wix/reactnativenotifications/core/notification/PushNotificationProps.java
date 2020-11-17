@@ -22,6 +22,14 @@ public class PushNotificationProps {
         return getBundleStringFirstNotNull("channelId", null);
     }
 
+    public int getPriority() {
+        return getBundleStringFirstNotNull("priority", null);
+    }
+
+    public int getFlagInsistent() {
+        return getBundleStringFirstNotNull("flagInsistent", null);
+    }
+
     public Bundle asBundle() {
         return (Bundle) mBundle.clone();
     }
