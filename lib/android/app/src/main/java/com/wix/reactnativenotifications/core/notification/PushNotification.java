@@ -66,7 +66,9 @@ public class PushNotification implements IPushNotification {
     @Override
     public void onReceived() throws InvalidNotificationException {
         if (!mAppLifecycleFacade.isAppVisible()) {
-            postNotification(null);
+            // Assume all notifications are properly handled in JS code even
+            // when the app is not visible.
+            //postNotification(null);
             notifyReceivedBackgroundToJS();
         } else {
             notifyReceivedToJS();
