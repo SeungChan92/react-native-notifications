@@ -11,6 +11,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReactContext;
@@ -201,7 +202,8 @@ public class PushNotification implements IPushNotification {
                 notification.setFullScreenIntent(intent, true)
                         .setAutoCancel(false)
                         .setOngoing(true)
-                        .setCategory(Notification.CATEGORY_CALL);
+                        .setCategory(Notification.CATEGORY_CALL)
+                        .setVisibility(Notification.VISIBILITY_PUBLIC);
 
                 // We'll use the default system ringtone for our incoming call notification.  You can
                 // use your own audio resource here.
@@ -270,6 +272,14 @@ public class PushNotification implements IPushNotification {
     protected void postNotification(int id, Notification notification) {
         final NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(id, notification);
+        // TODO: Better to launch a separate activity on top of lock screen.
+        // https://app.asana.com/0/0/1199229502507829/f
+        PowerManager pm = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        boolean isScreenOn = Build.VERSION.SDK_INT >= 20 ? pm.isInteractive() : pm.isScreenOn(); // check if screen is on
+        if (!isScreenOn) {
+            PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.SCREEN_DIM_WAKE_LOCK | PowerManager.ACQUIRE_CAUSES_WAKEUP, "myApp:notificationLock");
+            wl.acquire(3000); //set your time in milliseconds
+        }
     }
 
     protected int createNotificationId(Notification notification) {
