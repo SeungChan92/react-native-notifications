@@ -6,6 +6,9 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -151,12 +154,31 @@ public class PushNotification implements IPushNotification {
 
         final Bundle bundle = mNotificationProps.mBundle;
 
+        if (bundle.containsKey("call")) {
+            final boolean call = bundle.getBoolean("call");
+            if (call) {
+                notification.defaults ^= Notification.DEFAULT_SOUND;
+            }
+        }
+
         if (
                 bundle.containsKey("flagInsistent")
                 && bundle.getBoolean("flagInsistent")
            ) {
             notification.flags |= Notification.FLAG_INSISTENT;
         }
+
+        if (bundle.containsKey("vibrate")) {
+            notification.defaults ^= Notification.DEFAULT_VIBRATE;
+
+            final ArrayList<Integer> vibrate = (ArrayList) bundle.getSerializable("vibrate");
+            long[] arr = new long[vibrate.size()];
+            for (int i = 0; i < vibrate.size(); i++) {
+                arr[i] = (long) Long.valueOf(vibrate.get(i));
+            }
+            notification.vibrate = arr;
+        }
+
         Log.d("SEUNG", Arrays.toString(notification.vibrate));
 
         return notification;
@@ -173,24 +195,29 @@ public class PushNotification implements IPushNotification {
 
         final Bundle bundle = mNotificationProps.mBundle;
 
-        if (bundle.containsKey("voip")) {
-            final boolean voip = bundle.getBoolean("voip");
-            if (voip) {
-                notification.setFullScreenIntent(intent, true);
+        if (bundle.containsKey("call")) {
+            final boolean call = bundle.getBoolean("call");
+            if (call) {
+                notification.setFullScreenIntent(intent, true)
+                        .setAutoCancel(false)
+                        .setOngoing(true)
+                        .setCategory(Notification.CATEGORY_CALL);
+
+                // We'll use the default system ringtone for our incoming call notification.  You can
+                // use your own audio resource here.
+                Uri ringtoneUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE);
+                notification.setSound(ringtoneUri, new AudioAttributes.Builder()
+                        // Setting the AudioAttributes is important as it identifies the purpose of your
+                        // notification sound.
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION_RINGTONE)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build());
             }
         }
 
         if (bundle.containsKey("priority")) {
             final int priority = (int) bundle.getDouble("priority");
             notification.setPriority(priority);
-        }
-
-        if (bundle.containsKey("vibrate")) {
-            //final ArrayList<Long> vibrate = bundle.getSerializable("vibrate");
-            //long[] arr = new long[vibrate.size()];
-            //arr = vibrate.toArray(arr);
-            //notification.setVibrate(arr);
-            notification.setVibrate(new long[]{ 500, 1500 });
         }
 
         setUpIcon(notification);
